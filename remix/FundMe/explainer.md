@@ -34,7 +34,7 @@ The math is supposed to be clearer with hardhat.
 
 ---
 
-Also note that certain values are globally available - like `msg.sender` and ``. \
+Also note that certain values are globally available - like `msg.sender` and `msg.value`. \
 Full list here: https://docs.soliditylang.org/en/v0.8.10/units-and-global-variables.html.
 
 ---
@@ -42,4 +42,8 @@ Full list here: https://docs.soliditylang.org/en/v0.8.10/units-and-global-variab
 
 You can actually transform `getConversionRate()` from a method to be called to a property of `uint256` itself. That way it can me used like `msg.value.getConversionRate()` instead of `getConversionRate()`! This helps up in cleaning the code. 
 
-Libraries cant have state variables and cant send eth. All functions are `internal`. 
+Libraries can't have state variables and can't send eth. All library functions are `internal`. 
+
+For `uint256` library, the value on which this library is applied is considered as the first parameter to the function being called. 
+
+For example, `msg.value.library_function()` might be taking a `uint256` as a parameter, which will be  `msg.value` itself.
