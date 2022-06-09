@@ -1,6 +1,6 @@
 # Chainlink ETH data feeds, price, and sending ETH
 
-Rinkeby contract address: `0x8A753747A1Fa494EC906cE90E9f37563A8AF630e` \
+Rinkeby contract address for ETH-USD price feed: `0x8A753747A1Fa494EC906cE90E9f37563A8AF630e` \
 Source: https://docs.chain.link/docs/ethereum-addresses/ \
 Remember we need ABI + contract address to interact with contract.
 
