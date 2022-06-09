@@ -1,4 +1,4 @@
-# Chainlink ETH data feeds
+# Chainlink ETH data feeds, price, and sending ETH
 
 Rinkeby contract address: `0x8A753747A1Fa494EC906cE90E9f37563A8AF630e` \
 Source: https://docs.chain.link/docs/ethereum-addresses/ \
@@ -47,3 +47,80 @@ Libraries can't have state variables and can't send eth. All library functions a
 For `uint256` library, the value on which this library is applied is considered as the first parameter to the function being called. 
 
 For example, `msg.value.library_function()` might be taking a `uint256` as a parameter, which will be  `msg.value` itself.
+
+## SafeMath library
+
+Used in a ton of places before solidity version 0.8. `SafeMathTester.sol` has an explanation.
+
+---
+## Sending ether - 3 methods
+
+Found here: [solidity-by-example.org/sending-ether](https://solidity-by-example.org/sending-ether)
+
+### `transfer()`
+`payable(msg.sender).transfer(address(this).balance);`
+
+For any address to be able to receive funds, it has to be "payable address".\
+Normal addresses are "address", payable addresses are "payable address".\
+Thus typecasting is required for `msg.sender`.
+
+Also, `address(this)` --> 'this' refers to the whole smart contract.\
+Throws error if fails & automatically reverts.
+        
+
+### `send() `
+```
+bool sendSuccess = payable(msg.sender).send(address(this).balance);
+require(sendSuccess, "Sending failed!");
+```
+
+This one returns a `bool` and not an error 
+`send()` only reverts transaction if we add the `require()` statement\
+Remember how `require()` works? **Gas is used already for computation that has happened, but state is not saved on the blockchain** 
+        
+
+### `call()` - lower level command, v powerful 
+```
+(bool callSuccess, bytes memory dataReturned) = payable(msg.sender).call{value: address(this).balance}("");
+require(callSuccess, "Call failed!");
+```
+
+`call()` is actually lower level stuff that allows us to call anything (even used for calling contracts without ABIs, discussed later)\
+It returns 2 variables.
+
+`call()` allows us to actually call different functions, so if that function
+returns some data, it goes into `bytes dataReturned`
+
+bytes object is array, so needs to be `memory`
+since we aren't calling a function here, we can leave it as 
+`(bool callSuccess, ) = payable(msg.sender).call{value: address(this).balance}("");` as we don't care about what is returned.
+
+Also `call` doesn't have a capped amount of gas.\
+It is actually the recommended way to send tokens.
+
+---
+
+## Constructors and Modifieres
+
+```
+constructor(){
+        owner = msg.sender;
+    }
+```
+
+Constructors are called immediately after contract is deployed. 
+`require(msg.sender == owner, "Sender is not owner!");` ensures that owner only can withdraw.
+
+What if we have many requires in many different functions? Its a pain to include everywhere. This is where we use modifiers.
+
+```
+modifier onlyOwner{      
+    require(msg.sender == owner, "Sender is not owner!");
+    _;
+}
+```
+
+Hey function! Do whatever is in the modifier first, and then do whatever is in the `_;`.\
+If `require()` was below `_`;, first the function would exectute and `require()` would be at the end!
+
+View transactions here: https://rinkeby.etherscan.io/address/0xd3ca65bdf85d9240fd297154df3f86bb0ba9b432
