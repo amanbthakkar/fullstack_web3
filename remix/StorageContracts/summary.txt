@@ -1,0 +1,50 @@
+Txn Fees and gas:
+
+gas = unit of computation
+gas limit & gas usage are specified with a txn (max amount, and how much actually was used)
+
+txn fee = gas price * gas fee
+gas price is measured in ether or gwei
+
+1 gwei = 10^-9 ether
+0.000000002500000023 Ether = 2.50000.... Gwei
+gas price is measured in gwei/ether --> thus gas price is function of ETH price
+
+
+Sample: 
+Stable fee: https://rinkeby.etherscan.io/tx/0x5d0d8b61befc603c7d98e59be0f9ed7e59e14cbeb35a2cba3bfe3f96a873de75
+
+Fast fee:
+https://rinkeby.etherscan.io/tx/0xc7246373cbace29d2bb600bacfda2e3d1c8922e890708f14ee398437b84ab73f 
+
+
+Metamask shows you the transaction fee (total gas that is going to be paid)
+In case 2 I offered more "price" per gas --> i.e. paid 2 gwei per gas instead of 1.88
+The tnx in both cases used 21000 gas
+So in case1 I spent 1.88*21000 and in case2 I spent 2*21000 gweiddddd
+
+Address = public key -> hash it -> last 20 bytes (or similar, doesn't really matter. a derivative of public key)
+
+
+GAS SUMMARY
+
+Some gas is burnt.
+Gas burnt = base fee per gas * gas used.
+
+Base fee: base network fee per gas (goes up automatically when high demand, targets ~50% full blocks)
+It is the minimum gas needed to send a txn.
+
+
+Gas price = base fee per gas + max gas price  (priority = max gas price + tip to miners)
+Once u have gas price, 
+Txn fee = gas price * gas amount
+Txn savings = our max price - out final gas price
+-----------------------------------------------------------------------------------
+SimpleStorage: uint, int, address, bytes
+
+Remix: orange and blue
+view & pure ==> dont use gas (reads arent transactions) 
+view allows reading from blockchain, pure doesn't even allow that
+pure only like "return 1+1" type stuff  --> some math or algo etc
+
+if view function is called by another gas calling function, then some execution cost is indeed applied
