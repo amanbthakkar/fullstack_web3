@@ -12,12 +12,12 @@ contract FundMe {
     using PriceConverter for uint256;
 
 
-    uint256 public minUSD = 50 * 1e18;
+    uint256 public minUSD = 50 * 1e18; //can decalare as constant, refer notes
 
     address[] public funders; //can optimize to check if funder is already present in array
     mapping(address=>uint256) public addressToAmountFunded;
 
-    address public owner;
+    address public immutable owner;
 
     constructor(){
         //called immediately after contract is deployed
@@ -91,5 +91,15 @@ contract FundMe {
     modifier onlyOwner{
         require(msg.sender == owner, "Sender is not owner!");
         _;
+    }
+
+    //What happens if someone sends funds without using the fudnd()?
+    uint256 public result;
+    receive() external payable {
+        fund();
+    }//refer explainer
+
+    fallback() external payable {
+        fund(); //auto-route to fund function
     }
 }

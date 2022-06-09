@@ -1,4 +1,4 @@
-# Chainlink ETH data feeds, price, and sending ETH
+# Chainlink ETH data feeds, price, sending ETH and more!
 
 Rinkeby contract address for ETH-USD price feed: `0x8A753747A1Fa494EC906cE90E9f37563A8AF630e` \
 Source: https://docs.chain.link/docs/ethereum-addresses/ \
@@ -104,7 +104,7 @@ It is actually the recommended way to send tokens.
 
 ```
 constructor(){
-        owner = msg.sender;
+    owner = msg.sender;
 }
 ```
 
@@ -121,6 +121,50 @@ modifier onlyOwner{
 ```
 
 Its like "hey function! Do whatever is in the modifier first, and then do whatever is in the `_;`."\
-If `require()` was below `_`;, first the function would exectute and `require()` would be at the end!
+If `require()` was below `_;`, first the function would exectute and `require()` would be at the end!
 
 We deployed, funded and then withdrew funds from a smart contract. View transactions here: https://rinkeby.etherscan.io/address/0xd3ca65bdf85d9240fd297154df3f86bb0ba9b432
+
+---
+# Advanced Solidity
+
+## Gas optimization
+
+2 keywords that prevent values from changing - `constant` and `immutable`. This saves gas. 
+
+When applying `constant`, the variable no longer takes up a storage spot and is much easier to read. Details later.
+
+Convention: all-caps.\
+`uint256 public constant MIN_USD = 50 * 1e18;`
+
+Remember: View functions do have gas cost when called by a contract.
+For now, don't stress about gas optimizations. 
+
+`address public immutable owner;`
+
+Variables that are declared initially and then set outside that line (like in a constructor) can be marked as `immutable` if set just once.
+
+## Custom Errors
+
+We can improve our `require` as well. These error strings may appear small but they take storage space. From` 0.8.4`, you can change it to `if` statement and directly call a predefined error message. 
+
+First declare `error NotOwner();` ***outside*** the contract.
+
+```
+if(msg.sender != owner){
+    revert NotOwner(); //saves string space
+}
+```
+
+Btw you can **revert** any transaction in the middle of the function, anywhere, by just using `revert()`. 
+
+## Receive and Fallback
+
+What if someone sent money directly to our contract? Will the `fund()` function get triggered? No!
+
+So what happens is, whenever someone sends a transaction without any calldata, the `receive` function is invoked. *With* data, it assumes that one of the defined function is to be called. And *without* data, you can send 0 or more wei to the contract (using calldata in Remix) and that will call the `receive` function. 
+
+Now the `fallback` function is similar to the above, except it can even work when data is sent along. 
+
+So we add it to our `FundMe` contract just to handle this case.
+This will consume more gas compared to directly calling our contract's `fund()` function.

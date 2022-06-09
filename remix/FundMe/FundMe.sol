@@ -57,5 +57,4 @@ contract FundMe {
         return ethAmountInUSD;
     }
 
-
 }
