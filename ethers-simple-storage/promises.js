@@ -20,16 +20,22 @@ Great for when you want to do something that is going to take a long time - down
 Promises are meant to replace callbacks. Lot easier.
 */
 
-let userLeft = false;
+let userLeft = true;
 let userWatchingCatMeme = true;
 
 //define function that returns a promsise
 function watchTutorialPromise() {
   return new Promise((resolve, reject) => {
     if (userLeft) {
-      reject("User Left :(");
+      reject({
+        name: "User left",
+        message: ":/ :/ :/",
+      });
     } else if (userWatchingCatMeme) {
-      reject("User watching cat vids :/");
+      reject({
+        name: "User watching cat meme",
+        message: "Cat is better",
+      });
     } else {
       resolve("Like and subscribe!!1");
     }
@@ -41,6 +47,35 @@ watchTutorialPromise()
   .then((message) => {
     console.log("Promise resolved, " + message);
   })
-  .catch((message) => {
-    console.log("Promise rejected, " + message);
+  .catch((error) => {
+    console.log(error.name + " " + error.message); //error is the whole object that is returned
   });
+
+//------------------------------------------------------------------------------------------------------------------------------
+//How to use
+
+const recordVideoOne = new Promise((resolve, reject) => {
+  resolve("Video 1 recorded");
+});
+const recordVideoTwo = new Promise((resolve, reject) => {
+  resolve("Video 2 recorded");
+});
+const recordVideoThree = new Promise((resolve, reject) => {
+  resolve("Video 3 recorded");
+});
+
+//waits for all to complete and then resolves
+Promise.all([recordVideoOne, recordVideoTwo, recordVideoThree]).then(
+  (messages) => {
+    //array returned with all promises (all run at the same time btw, one doesn't need to wait for other)
+    console.log(messages);
+  }
+);
+
+//waits for just one, and resolves fastes
+Promise.race([recordVideoOne, recordVideoTwo, recordVideoThree]).then(
+  (message) => {
+    //single msg only
+    console.log(message);
+  }
+);
