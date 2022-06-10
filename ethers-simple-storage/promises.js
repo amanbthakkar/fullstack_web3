@@ -16,6 +16,7 @@ p.then((message) => {
 });
 
 /* 
+Here p is a promise
 Great for when you want to do something that is going to take a long time - download img from server and do something after it is completed
 Promises are meant to replace callbacks. Lot easier.
 */
