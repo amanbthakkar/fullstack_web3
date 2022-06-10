@@ -62,3 +62,4 @@ async function doWork() {
 doWork();
 
 //you can see where ======= is printed based on what is getting called where
+//the orders are not the same as something else might be executed while something is waiting!!
