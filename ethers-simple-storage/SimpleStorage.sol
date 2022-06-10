@@ -1,22 +1,17 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.7; //^ indicates higher versions are OK
+pragma solidity ^0.8.7;
 
 contract SimpleStorage {
-    uint256 public favoriteNumber; //default is null value, which for ints is 0
-    //default visibility is internal
+    uint256 public favoriteNumber;
 
     People[] public people;
-
-    //People public person1 = People({favoriteNumber: 3,name :"Aman"});
 
     struct People {
         uint256 favoriteNumber;
         string name;
     }
 
-    mapping(string => uint256) nameToFavoriteNumber; //like a dictionary of sorts
-
-    //initially all strings to 0
+    mapping(string => uint256) nameToFavoriteNumber;
 
     function store(uint256 _favoriteNumber) public virtual {
         favoriteNumber = _favoriteNumber;
