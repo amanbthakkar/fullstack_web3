@@ -82,7 +82,7 @@ require(sendSuccess, "Sending failed!");
 
 This one returns a `bool` and not an error.\
 `send()` only reverts transaction if we add the `require()` statement\
-Remember how `require()` works? **Gas is used already for computation that has happened, but state is not saved on the blockchain**
+Remember how `require()` works? **Gas is used up for the computation that has already happened so far, but state is not saved on the blockchain. Leftover gas is sent back**
 
 ## `call()` - lower level command, v powerful
 
@@ -101,7 +101,7 @@ bytes object is array, so needs to be `memory`\
 since we aren't calling a function here, we can leave it as
 `(bool callSuccess, ) = payable(msg.sender).call{value: address(this).balance}("");` as we don't care about what is returned.
 
-Also `call` doesn't have a capped amount of gas.\
+Also `call()` doesn't have a capped amount of gas, like the first two.\
 It is actually the recommended way to send tokens.
 
 ---
@@ -144,18 +144,18 @@ When applying `constant`, the variable no longer takes up a storage spot and is 
 Convention: all-caps.\
 `uint256 public constant MIN_USD = 50 * 1e18;`
 
-Remember: View functions do have gas cost when called by a contract.
+Remember: `view` functions do have gas cost associated with them when called by a contract.
 For now, don't stress about gas optimizations.
 
 `address public immutable owner;`
 
-Variables that are declared initially and then set outside that line (like in a constructor) can be marked as `immutable` if set just once.
+Variables that are declared initially and then set outside that line (like in a constructor) can be marked as `immutable` if set just once later on. Like the owner of the contract.
 
 ## Custom Errors
 
-We can improve our `require` as well. These error strings may appear small but they take storage space. From` 0.8.4`, you can change it to `if` statement and directly call a predefined error message.
+We can improve our `require` as well. These error strings that we set may appear small but they take storage space. From `0.8.4`, you can change it to an `if` statement and directly call a predefined error message.
 
-First declare `error NotOwner();` **_outside_** the contract.
+First declare `error NotOwner();` **_outside_** the contract. And then\
 
 ```
 if(msg.sender != owner){
