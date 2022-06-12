@@ -155,7 +155,7 @@ Variables that are declared initially and then set outside that line (like in a 
 
 We can improve our `require` as well. These error strings that we set may appear small but they take storage space. From `0.8.4`, you can change it to an `if` statement and directly call a predefined error message.
 
-First declare `error NotOwner();` **_outside_** the contract. And then\
+First declare `error NotOwner();` **_outside_** the contract. And then
 
 ```
 if(msg.sender != owner){
@@ -169,7 +169,7 @@ Btw you can **revert** any transaction in the middle of the function, anywhere, 
 
 What if someone sent money directly to our contract? Will the `fund()` function get triggered? No!
 
-So what happens is, whenever someone sends a transaction without any calldata, the `receive` function is invoked. _With_ data, it assumes that one of the defined function is to be called. And _without_ data, you can send 0 or more wei to the contract (using calldata in Remix) and that will call the `receive` function.
+So what happens is -- whenever someone sends a transaction without any "calldata", the `receive` function is invoked. _With_ data, it assumes that one of the defined functions is to be called. And _without_ data, you can send 0 or more wei to the contract (using calldata in Remix) and that will call the `receive` function.
 
 Now the `fallback` function is similar to the above, except it can even work when data is sent along.
 
