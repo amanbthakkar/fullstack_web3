@@ -4,7 +4,7 @@
 
 `yarn init`
 
-delete` "main"` line from `package.json`
+delete `main` line from `package.json`
 
 `yarn add --dev hardhat`
 
@@ -101,7 +101,7 @@ New value is:  7
 What all can you do with tasks? You can set parameters and actions. https://hardhat.org/guides/create-task
 
 So whats `hre`? Hardhat Runtime Environment. It is passed to the tasks.
-It is like the hardhat in `require(hardhat)` so has access to these kinds of functions. So you can do stuff like `hre.ethers.`......
+It is like the hardhat in `require(hardhat)` so has access to these kinds of functions. So you can do stuff like `hre.ethers.somethingsomething`
 
 Don't forget to import in config file. And oh - add a `module.exports = {}` so that you can import it!
 
