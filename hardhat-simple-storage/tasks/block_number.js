@@ -12,3 +12,5 @@ task(
         console.log(`Current block is ${blockNumber}`)
     }
 )
+
+module.exports = {}

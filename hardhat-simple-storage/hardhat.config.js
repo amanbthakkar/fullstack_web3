@@ -2,6 +2,8 @@ require("@nomiclabs/hardhat-waffle")
 require("@nomiclabs/hardhat-etherscan")
 require("dotenv").config()
 require("./tasks/block_number")
+require("hardhat-gas-reporter")
+require("solidity-coverage")
 
 // This is a sample Hardhat task. To learn how to create your own go to
 // https://hardhat.org/guides/create-task.html
@@ -20,9 +22,13 @@ require("./tasks/block_number")
  * @type import('hardhat/config').HardhatUserConfig
  */
 
-const RINKEBY_RPC_URL = process.env.RINKEBY_RPC_URL
-const PRIVATE_KEY = process.env.PRIVATE_KEY
-const ETHERSCAN_API_KEY = process.env.ETHERSCAN_API_KEY
+const RINKEBY_RPC_URL = process.env.RINKEBY_RPC_URL || "https-example"
+const PRIVATE_KEY = process.env.PRIVATE_KEY || ""
+const ETHERSCAN_API_KEY = process.env.ETHERSCAN_API_KEY || "lol"
+const CMC_API_KEY = process.env.CMC_API_KEY || "lol"
+
+//if somehow by chance these variables are not defined in .env, then they arent initialized as well
+//then JS gets confused. so we add a backup "" value
 
 module.exports = {
     defaultNetwork: "hardhat",
@@ -38,10 +44,17 @@ module.exports = {
             //no need to give accounts, they are readymade
         },
     },
+
+    solidity: "0.8.8",
     etherscan: {
         apiKey: ETHERSCAN_API_KEY,
     },
-    solidity: "0.8.8",
+    gasReporter: {
+        enabled: false, //keep true when you need
+        outputFile: "gas-report.txt",
+        noColors: true,
+        currency: "USD",
+        coinmarketcap: CMC_API_KEY,
+        // token: "MATIC",
+    },
 }
-
-//module.exports = {}

@@ -110,3 +110,57 @@ Don't forget to import in config file. And oh - add a `module.exports = {}` so t
 Now what if you want to have your hardhat network/environment live past the duration of a script?
 
 You run `yarn hardhat node` which spins up a separate, kinda persistent runtime env (hardhat only, but different from the defaultNetwork one). It comes prepackaged with some private keys and wallets, and a localhost url. You can then add this to config file!
+
+Tip: `yarn hardhat console --network xyz`
+
+---
+
+### Tests
+
+`yarn hardhat clean` clears cache and removes artifacts folder.
+
+Tests - `mocha` for hardhat. The code is self explanatory to a point.
+
+We can even start testing how much gas our code costs! `yarn add hardhat-gas-reporter --dev`\
+Go to config and add a `gasReporter` section now. After enabling by default, you get something like this when you run `yarn hardhat test` -->
+
+```
+hardhat-simple-storage$ yarn hardhat test
+yarn run v1.22.15
+$ /home/aman/development/fullstack_web3/hardhat-simple-storage/node_modules/.bin/hardhat test
+
+  SimpleStorage
+    ✓ Should start with favorite number of 0
+    ✓ Should update when we call store()
+
+·----------------------------|----------------------------|-------------|-----------------------------·
+|    Solc version: 0.8.8     ·  Optimizer enabled: false  ·  Runs: 200  ·  Block limit: 30000000 gas  │
+·····························|····························|·············|······························
+|  Methods                                                                                            │
+··················|··········|··············|·············|·············|···············|··············
+|  Contract       ·  Method  ·  Min         ·  Max        ·  Avg        ·  # calls      ·  eur (avg)  │
+··················|··········|··············|·············|·············|···············|··············
+|  SimpleStorage  ·  store   ·           -  ·          -  ·      43746  ·            1  ·          -  │
+··················|··········|··············|·············|·············|···············|··············
+|  Deployments               ·                                          ·  % of limit   ·             │
+·····························|··············|·············|·············|···············|··············
+|  SimpleStorage             ·           -  ·          -  ·     473840  ·        1.6 %  ·          -  │
+·----------------------------|--------------|-------------|-------------|---------------|-------------·
+
+  2 passing (3s)
+
+Done in 9.52s.
+```
+
+---
+
+### Solidity coverage
+
+Goes through all tests and sees how many lines of code are covered.
+Remember all libraries installed are added in config.
+
+`yarn add --dev solidity-coverage` --> then run `yarn hardhat coverage`
+
+And now we finally talk about `require("@nomiclabs/hardhat-waffle")`. What's this?
+
+Waffle is a testing framework. Really advanced testing.
