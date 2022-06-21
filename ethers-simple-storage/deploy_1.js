@@ -34,17 +34,17 @@ async function main() {
   //a factory is an object used to deploy contracts
   const contractFactory = new ethers.ContractFactory(abi, binary, wallet)
   console.log("Deploying...")
-  // const contract = await contractFactory.deploy(); //STOP HERE AND WAIT FOR DEPLOY
-  // //deploy function returns a promise that resolves to a contract
-  // const transactionReceipt = await contract.deployTransaction.wait(1);
-  // //wait for one block confirmation - you only get transaction receipt when you wait for a block confirmation
-  // console.log("Here is the transaction deployment (transaction response):");
-  // console.log(contract.deployTransaction); //this is what you get after deploy command, when contract is returned
+  const contract = await contractFactory.deploy() //STOP HERE AND WAIT FOR DEPLOY
+  //deploy function returns a promise that resolves to a contract
+  const transactionReceipt = await contract.deployTransaction.wait(1)
+  //wait for one block confirmation - you only get transaction receipt when you wait for a block confirmation
+  console.log("Here is the transaction deployment (transaction response):")
+  console.log(contract.deployTransaction) //this is what you get after deploy command, when contract is returned
   console.log(
     "=============================================================================="
   )
-  // console.log("Here is the transaction receipt:");
-  // console.log(transactionReceipt);
+  console.log("Here is the transaction receipt:")
+  console.log(transactionReceipt)
   console.log(
     "=============================================================================="
   )

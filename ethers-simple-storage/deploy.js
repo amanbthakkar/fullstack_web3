@@ -32,18 +32,32 @@ async function main() {
   console.log("Deploying...")
   const contract = await contractFactory.deploy()
 
-  await contract.deployTransaction.wait(1)
-  //console.log("Here is the transaction deployment (transaction response):");
-  //console.log(contract.deployTransaction); //this is what you get after deploy command, when contract is returned
-  console.log("Contract address: ${contract.address}")
+  console.log("Here is the transaction deployment (transaction response):")
+  console.log(contract.deployTransaction) //this is what you get after deploy command, when contract is returned
+  console.log(
+    "=============================================================================="
+  )
+
+  const transactionReceipt = await contract.deployTransaction.wait(4)
+  //wait for one block confirmation - you only get transaction receipt when you wait for a block confirmation
+
+  console.log("Here is the transaction receipt:")
+  console.log(transactionReceipt)
+
+  console.log(`Contract address: ${contract.address}`)
   console.log(
     "=============================================================================="
   )
   const currentFavNumber = await contract.retrieve()
   console.log(`Current fav number: ${currentFavNumber.toString()}`)
 
+  console.log(
+    "=============================================================================="
+  )
   const transactionResponse = await contract.store("7")
-  await transactionResponse.wait(1)
+  const awaitResponse = await transactionResponse.wait(1)
+
+  console.log(awaitResponse)
 
   const newFavNumber = await contract.retrieve()
   console.log(`New fav number: ${newFavNumber.toString()}`)
