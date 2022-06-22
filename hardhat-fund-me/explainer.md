@@ -25,3 +25,5 @@ Now, while deploying - what's the issue? We can't possibly deploy to Rinkeby eve
 Now you can set pricefeed address by using conditions based on chainId. Aave's github (github.com/aave/aave-v3-core) has this. Check `helper-hardhat-config.ts`.
 
 Taking a leaf out of their notebook, we create a new file called `helper-hardhat-config.js`.
+
+Can we run only mock deployment script and not the FundMe deployment script?

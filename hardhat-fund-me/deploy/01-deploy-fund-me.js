@@ -1,4 +1,5 @@
 const { networkConfig } = require("../helper-hardhat-config")
+const { network } = require("hardhat")
 
 // in hardhat-deploy, there is no main() that is written and then called.
 // it actually calls a function that we export => OR we can export an anonymous function directly from module.exports!
@@ -27,6 +28,10 @@ module.exports = async ({ getNamedAccounts, deployments }) => {
     //use chainId to set the price feed address (aave's github has this!)
 
     const ethUsdPriceFeedAddress = networkConfig[chainId]["ethUsdPriceFeed"]
+
+    // for those networks that don't have a price feed, we create mock contracts
+    // first check if they are already created and if not, create a minimal version for local testing
+    // and technically deploying a mock is a deploy script
 
     const fundMe = await deploy("FundMe", {
         from: deployer, //who's deploying?
