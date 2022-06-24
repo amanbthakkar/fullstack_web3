@@ -1,5 +1,6 @@
-const { networkConfig } = require("../helper-hardhat-config")
+const { networkConfig, developmentChains } = require("../helper-hardhat-config")
 const { network } = require("hardhat")
+const { verify } = require("../utils/verify")
 
 // in hardhat-deploy, there is no main() that is written and then called.
 // it actually calls a function that we export => OR we can export an anonymous function directly from module.exports!
@@ -27,15 +28,43 @@ module.exports = async ({ getNamedAccounts, deployments }) => {
 
     //use chainId to set the price feed address (aave's github has this!)
 
-    const ethUsdPriceFeedAddress = networkConfig[chainId]["ethUsdPriceFeed"]
+    //const ethUsdPriceFeedAddress = networkConfig[chainId]["ethUsdPriceFeed"]
+
+    let ethUsdPriceFeedAddress
+
+    if (developmentChains.includes(network.name)) {
+        //00- script has deployed the mock already, now we need to get it here
+        const ethUsdAggregator = await deployments.get("MockV3Aggregator")
+        ethUsdPriceFeedAddress = ethUsdAggregator.address //now the pricefeed is the contract we deployed
+    } else {
+        ethUsdPriceFeedAddress = networkConfig[chainId]["ethUsdPriceFeed"]
+    }
+
+    log(`ETH-USD price feed for ${network.name} is ${ethUsdPriceFeedAddress}`)
 
     // for those networks that don't have a price feed, we create mock contracts
     // first check if they are already created and if not, create a minimal version for local testing
     // and technically deploying a mock is a deploy script
-
+    const args = [ethUsdPriceFeedAddress]
     const fundMe = await deploy("FundMe", {
         from: deployer, //who's deploying?
-        args: [ethUsdPriceFeedAddress], //list of constructor args
+        args: args, //list of constructor args
         log: true, //custom logging
+        waitConfirmations: network.config.blockConfirmations || 1,
     })
+
+    // lets also verify the contract if not local network
+    if (
+        !developmentChains.includes(network.name) &&
+        process.env.ETHERSCAN_API_KEY
+    ) {
+        log("--- Contract verification step---")
+        await verify(fundMe.address, args)
+    }
+
+    log(
+        "========================================================================"
+    )
 }
+
+module.exports.all = ["all", "fundme"]

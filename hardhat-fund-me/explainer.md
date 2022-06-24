@@ -27,3 +27,12 @@ Now you can set pricefeed address by using conditions based on chainId. Aave's g
 Taking a leaf out of their notebook, we create a new file called `helper-hardhat-config.js`.
 
 Can we run only mock deployment script and not the FundMe deployment script?
+
+===
+
+`blockConfirmations: 6,` in hardhat config helps us always wait 6 blocks after deploymnet (useful while running verification on etherscan)
+
+!!! Remember: `hardhat-config-js` provides some values to the `const { network } = require("hardhat")` bit like `chainId` and stuff.
+
+===
+Style guides: Check out Solity style guides and NatSpec format.

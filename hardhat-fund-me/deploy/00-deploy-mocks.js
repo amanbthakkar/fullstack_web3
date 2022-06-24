@@ -19,9 +19,9 @@ module.exports = async ({ getNamedAccounts, deployments }) => {
             args: [DECIMALS, INITIAL_ANSWER], //takes decimals and an initial answer
             log: true,
         })
+        log("Mocks Deployed")
     }
 
-    log("Mocks Deployed")
     log("============================================")
 }
 
