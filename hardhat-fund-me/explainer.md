@@ -28,11 +28,18 @@ Taking a leaf out of their notebook, we create a new file called `helper-hardhat
 
 Can we run only mock deployment script and not the FundMe deployment script?
 
-===
+---
 
 `blockConfirmations: 6,` in hardhat config helps us always wait 6 blocks after deploymnet (useful while running verification on etherscan)
 
 !!! Remember: `hardhat-config-js` provides some values to the `const { network } = require("hardhat")` bit like `chainId` and stuff.
 
-===
+---
+
 Style guides: Check out Solity style guides and NatSpec format.
+
+## Testing
+
+Create a `staging` folder and a `unit` folder inside for tests. Unit tests test single units of code. Staging/integration tests run on the testnets. Last step before deploying.
+
+Unit tests can be done on local network or forked networks as well (forking real mainnet!)

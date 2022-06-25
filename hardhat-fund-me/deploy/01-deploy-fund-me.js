@@ -19,7 +19,7 @@ const { verify } = require("../utils/verify")
 module.exports = async ({ getNamedAccounts, deployments }) => {
     //now take further stuff from here
     const { deploy, log } = deployments //2 functions taken from deployments
-    const { deployer } = await getNamedAccounts() //add namedAccounts to hardhat config (get the deployer account from there)
+    const { deployer } = await getNamedAccounts() //added namedAccounts to hardhat config (get the deployer account from there)
     const chainId = network.config.chainId
 
     // when going for localhost/hardhat we gonna use a mock
@@ -53,6 +53,12 @@ module.exports = async ({ getNamedAccounts, deployments }) => {
         waitConfirmations: network.config.blockConfirmations || 1,
     })
 
+    log("Contract has been deployed.")
+    //////////////////////////////////////////////////////////////////////////////////
+    test = await deployments.get("FundMe")
+    log(`test: ${test.address}`)
+    /////////////////////////////////////////////////////////////////////////////////
+
     // lets also verify the contract if not local network
     if (
         !developmentChains.includes(network.name) &&
@@ -67,4 +73,4 @@ module.exports = async ({ getNamedAccounts, deployments }) => {
     )
 }
 
-module.exports.all = ["all", "fundme"]
+module.exports.tags = ["all", "fundme"]

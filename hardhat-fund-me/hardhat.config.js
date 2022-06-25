@@ -35,11 +35,11 @@ module.exports = {
         currency: "USD",
     },
     etherscan: {
-        apiKey: process.env.ETHERSCAN_API_KEY,
+        apiKey: ETHERSCAN_API_KEY,
     },
     namedAccounts: {
         deployer: {
-            default: 0,
+            default: 0, //as in from all getAccounts, 0th index will be referred to as deployer
         },
         user: {
             default: 1,
